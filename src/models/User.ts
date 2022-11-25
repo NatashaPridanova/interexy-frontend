@@ -1,6 +1,7 @@
 export interface SignInUser {
   email: string;
   password: string;
+  isToRemember?: boolean;
 }
 
 export interface SignUpUser {
@@ -15,4 +16,16 @@ export interface DBUser {
   name: string;
   surname: string;
   email: string;
+}
+
+export interface AuthUser {
+  token: string;
+  userId: string;
+  name: string;
+}
+
+export class AppError {
+  errorMessage!: string;
+  errorCode!: number;
+  errorType!: string;
 }

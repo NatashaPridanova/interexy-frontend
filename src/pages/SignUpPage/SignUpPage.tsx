@@ -3,8 +3,41 @@ import AuthForm from '../../components/AuthForm/AuthForm';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { requiredMessage } from '../SignInPage/SignInPage';
+import { useContext, useState } from 'react';
+import { signUp, signIn } from '../../api/UserApi/UserApi';
+import ErrorBar from '../../components/ErrorBar/ErrorBar';
+import { AxiosError } from 'axios';
+import { appContext } from '../../store/appContext';
+import { getErrorMessage } from '../../utils/utils';
 
 function SignUpPage() {
+  console.log('render sign up page');
+  const [user, setUser] = useState<SignUpUser | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { state, setState } = useContext(appContext);
+  const navigate = useNavigate();
+
+  const getUserFromForm = (userData: SignUpUser) => {
+    setUser(userData);
+    if (user) {
+      signUp(user).then((data) => {
+        if (data instanceof AxiosError) {
+          setErrorMessage(getErrorMessage(data));
+        } else if (data) {
+          signIn(user).then((data) => {
+            if (data instanceof AxiosError) {
+              setErrorMessage(getErrorMessage(data));
+            } else if (data) {
+              localStorage.setItem('token', data.token);
+              setState({ ...state, isLoggedIn: true });
+              navigate('/');
+            }
+          });
+        }
+      });
+    }
+  };
+
   return (
     <Box className="signup-page__wrapper">
       <AuthForm
@@ -45,14 +78,16 @@ function SignUpPage() {
           },
         ]}
         className="signup-form"
-        formData={{ name: '', surname: '', password: '', email: '' }}
+        formData={{ name: '', surname: '', password: '', email: '', isToRemember: false }}
         submitBtnText="Sign up"
         additionalText={{
           mainText: `Already have an account? `,
           linkText: 'Sign in',
           linkHref: '/signin',
         }}
+        getUserFromForm={getUserFromForm}
       />
+      {errorMessage && <ErrorBar message={errorMessage} open={true} />}
     </Box>
   );
 }

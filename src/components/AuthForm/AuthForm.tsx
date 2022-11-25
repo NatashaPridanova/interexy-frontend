@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography, Checkbox, FormControlLabel } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { red } from '@mui/material/colors';
 import { FormProps, InputAttributes, FormData } from './types';
@@ -10,6 +10,8 @@ export default function AuthForm({
   formData,
   submitBtnText,
   additionalText,
+  getUserFromForm,
+  checkboxInput,
 }: FormProps) {
   const {
     control,
@@ -21,7 +23,7 @@ export default function AuthForm({
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    getUserFromForm(data);
   };
 
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ export default function AuthForm({
       sx={{
         '& > :not(style)': { m: 1 },
         textAlign: 'center',
+        backgroundColor: 'white',
       }}
     >
       {inputAttributes.map((input: InputAttributes) => {
@@ -54,6 +57,20 @@ export default function AuthForm({
           </div>
         );
       })}
+      {checkboxInput && (
+        <div>
+          <FormControlLabel
+            control={
+              <Controller
+                name="isToRemember"
+                render={({ field }) => <Checkbox {...field} />}
+                control={control}
+              />
+            }
+            label={'Remember me'}
+          />
+        </div>
+      )}
       <Button type="submit" variant="contained">
         {submitBtnText}
       </Button>

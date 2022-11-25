@@ -6,10 +6,8 @@
 }
 
 .character-card {
-  background-color: #00bcd4;
   border-radius: 5%;
   padding: 1rem;
-  cursor: pointer;
   width: 250px;
   height: 330px;
   display: flex;
@@ -32,4 +30,17 @@
   width: 150px;
   height: 150px;
   border-radius: 20%;
+}
+
+.character-card__link {
+  font-family: sans-serif;
+  display: inline-block;
+  width: 150px;
+  padding: 10px;
+  margin: 0.5rem;
+  background-color: #0d47a1;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 5px;
 }

@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { Character } from '../../models/Character';
 import { Link } from 'react-router-dom';
-import './character-card.css';
+import './CharacterCard.css';
 
 export default function CharacterCard({ data }: { data: Character }) {
   return (
@@ -13,7 +13,7 @@ export default function CharacterCard({ data }: { data: Character }) {
         <Typography variant="body1">Gender: {data.gender}</Typography>
         <Typography variant="body1">Location: {data.location.name}</Typography>
       </Box>
-      <Link to={data.id.toString()} className="nav__link">
+      <Link to={`characters/${data.id.toString()}`} className="character-card__link">
         learn more
       </Link>
     </Box>

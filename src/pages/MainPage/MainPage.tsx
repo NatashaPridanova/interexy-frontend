@@ -1,54 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import { getCharacters } from '../../api/CharacterApi/CharacterApi';
-import { CharactersResponse, Character } from '../../models/Character';
+import { Character } from '../../models/Character';
 import CharacterCard from '../../components/CharacterCard/CharacterCard';
 import { AxiosError } from 'axios';
 import ErrorBar from '../../components/ErrorBar/ErrorBar';
+import { appContext } from '../../store/appContext';
+import { Box, CircularProgress } from '@mui/material';
+import PaginationBar from '../../components/PaginationBar/Pagination';
+import './MainPage.css';
 
 function MainPage() {
-  const [characters, setCharacters] = useState<CharactersResponse>({
-    info: {
-      count: 0,
-      pages: 0,
-      next: '',
-      prev: '',
-    },
-    results: [],
-  });
   const [errorMessage, setErrorMessage] = useState('');
-  console.log('characters state is', characters);
-  const loadCharacters = async () => {
-    try {
-      getCharacters().then((data) => {
-        console.log('data', data);
-        if (data) {
-          if (data instanceof AxiosError) {
-            setErrorMessage(data.message);
-          } else {
-            setCharacters(data);
-          }
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { state, setState } = useContext(appContext);
+
+  const loadCharacters = async (value: number) => {
+    setIsLoading(true);
+    getCharacters(value).then((data) => {
+      if (data) {
+        if (data instanceof AxiosError) {
+          setErrorMessage(data.message);
+        } else {
+          setState({ ...state, characters: data, currentPage: value });
         }
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      }
+      setIsLoading(false);
+    });
   };
+
   useEffect(() => {
-    loadCharacters();
+    loadCharacters(state.currentPage);
   }, []);
 
   return (
-    <div className="character-card__wrapper">
-      {characters.results.length ? (
-        characters.results.map((character: Character) => {
-          return <CharacterCard key={character.id} data={character} />;
-        })
-      ) : (
-        <p>No character was found :(</p>
+    <Box className="view__wrapper">
+      {isLoading && <CircularProgress />}
+      <Box className="character-card__wrapper">
+        {!isLoading &&
+          state.characters.results.length &&
+          state.characters.results.map((character: Character) => {
+            return <CharacterCard key={character.id} data={character} />;
+          })}
+      </Box>
+      {!isLoading && state.characters.results.length && (
+        <PaginationBar
+          count={state.characters.info.pages}
+          page={state.currentPage}
+          loadCharacters={loadCharacters}
+        />
       )}
-      {errorMessage && <ErrorBar message={errorMessage} open={true} />}
-    </div>
+      {!isLoading && errorMessage && <ErrorBar message={errorMessage} open={true} />}
+    </Box>
   );
 }
 

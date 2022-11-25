@@ -8,11 +8,12 @@ interface LinkButtonProps {
   path: string;
   text: string;
   children?: ReactNode;
+  onClickFunction?: () => void;
 }
 
-function LinkButton({ path, text, children }: LinkButtonProps) {
+function LinkButton({ path, text, children, onClickFunction }: LinkButtonProps) {
   return (
-    <Link to={path} className="link-button">
+    <Link to={path} className="link-button" onClick={onClickFunction}>
       <IconButton size="large" aria-haspopup="true" color="inherit" sx={{ p: '16px 12px' }}>
         {children}
         <Typography variant="button" sx={{ pl: 1 }}>
