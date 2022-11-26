@@ -8,18 +8,18 @@ import HomeIcon from '@mui/icons-material/Home';
 import Stack from '@mui/material/Stack';
 import LinkButton from '../../components/buttons/LinkButton/LinkButton';
 import { primaryColor } from '../../App';
-import { getTokenFromLocalStorage } from '../../utils/utils';
+import { removeTokenFromStorage, getTokenFromStorage } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import { appContext } from '../../store/appContext';
 import { useContext } from 'react';
 
 export default function Header() {
-  const token: string = getTokenFromLocalStorage();
+  const token: string = getTokenFromStorage();
   const { state, setState } = useContext(appContext);
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.setItem('token', '');
+    removeTokenFromStorage();
     setState({ ...state, isLoggedIn: false });
     navigate('/');
   };

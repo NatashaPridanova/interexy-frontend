@@ -1,4 +1,3 @@
-import { DBUser } from './User';
 import { CharactersResponse } from './Character';
 
 interface StateValues {

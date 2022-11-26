@@ -40,6 +40,10 @@ export default function AuthForm({
         '& > :not(style)': { m: 1 },
         textAlign: 'center',
         backgroundColor: 'white',
+        width: '500px',
+        margin: 'auto',
+        padding: '1rem',
+        borderRadius: '1rem',
       }}
     >
       {inputAttributes.map((input: InputAttributes) => {

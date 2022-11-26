@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import { SignInUser, SignUpUser } from '../../models/User';
+import { UserSignIn, UserSignUp } from '../../models/User';
 
 export interface FormData {
   name: string;
@@ -26,6 +25,6 @@ export interface FormProps {
   formData: FormData;
   submitBtnText: string;
   additionalText: { mainText: string; linkText: string; linkHref: string };
-  getUserFromForm: ((user: SignInUser) => void) | ((user: SignUpUser) => void);
+  getUserFromForm: ((user: UserSignIn) => void) | ((user: UserSignUp) => void);
   checkboxInput?: boolean;
 }

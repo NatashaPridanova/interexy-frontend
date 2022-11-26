@@ -1,4 +1,4 @@
-import { SignInUser } from '../../models/User';
+import { UserSignIn } from '../../models/User';
 import AuthForm from '../../components/AuthForm/AuthForm';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -12,32 +12,26 @@ import { getEmailFromLocalStorage, getErrorMessage, handleRememberMe } from '../
 export const requiredMessage = 'This field is required';
 
 function SignInPage() {
-  const [user, setUser] = useState<SignInUser | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const { state, setState } = useContext(appContext);
 
   const email = getEmailFromLocalStorage();
 
-  const getUserFromForm = (userData: SignInUser) => {
-    setUser(userData);
-  };
-
-  const navigate = useNavigate();
-
-  if (user) {
-    signIn(user).then((data) => {
+  const getUserFromForm = (userData: UserSignIn) => {
+    signIn(userData).then((data) => {
       if (data instanceof AxiosError) {
         setErrorMessage(getErrorMessage(data));
       } else if (data) {
-        localStorage.setItem('token', data.token);
         setState({ ...state, isLoggedIn: true });
-        if (user.isToRemember !== undefined) {
-          handleRememberMe(user.isToRemember, user.email);
+        if (userData.isToRemember !== undefined) {
+          handleRememberMe(userData.isToRemember, userData.email, data.token);
         }
         navigate('/');
       }
     });
-  }
+  };
+
+  const navigate = useNavigate();
 
   return (
     <Box className="signin-page__wrapper">

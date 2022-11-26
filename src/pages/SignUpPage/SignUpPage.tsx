@@ -1,4 +1,4 @@
-import { SignUpUser } from '../../models/User';
+import { UserSignUp } from '../../models/User';
 import AuthForm from '../../components/AuthForm/AuthForm';
 import { Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -11,31 +11,26 @@ import { appContext } from '../../store/appContext';
 import { getErrorMessage } from '../../utils/utils';
 
 function SignUpPage() {
-  console.log('render sign up page');
-  const [user, setUser] = useState<SignUpUser | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const { state, setState } = useContext(appContext);
   const navigate = useNavigate();
 
-  const getUserFromForm = (userData: SignUpUser) => {
-    setUser(userData);
-    if (user) {
-      signUp(user).then((data) => {
-        if (data instanceof AxiosError) {
-          setErrorMessage(getErrorMessage(data));
-        } else if (data) {
-          signIn(user).then((data) => {
-            if (data instanceof AxiosError) {
-              setErrorMessage(getErrorMessage(data));
-            } else if (data) {
-              localStorage.setItem('token', data.token);
-              setState({ ...state, isLoggedIn: true });
-              navigate('/');
-            }
-          });
-        }
-      });
-    }
+  const getUserFromForm = (userData: UserSignUp) => {
+    signUp(userData).then((data) => {
+      if (data instanceof AxiosError) {
+        setErrorMessage(getErrorMessage(data));
+      } else if (data) {
+        signIn(userData).then((data) => {
+          if (data instanceof AxiosError) {
+            setErrorMessage(getErrorMessage(data));
+          } else if (data) {
+            localStorage.setItem('token', data.token);
+            setState({ ...state, isLoggedIn: true });
+            navigate('/');
+          }
+        });
+      }
+    });
   };
 
   return (

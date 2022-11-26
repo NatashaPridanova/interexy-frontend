@@ -1,17 +1,17 @@
-export interface SignInUser {
+export interface UserSignIn {
   email: string;
   password: string;
   isToRemember?: boolean;
 }
 
-export interface SignUpUser {
+export interface UserSignUp {
   name: string;
   surname: string;
   email: string;
   password: string;
 }
 
-export interface DBUser {
+export interface User {
   id: string;
   name: string;
   surname: string;

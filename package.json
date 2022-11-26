@@ -28,7 +28,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint": "eslint src --fix"
+    "lint": "eslint src --fix",
+    "prettier": "prettier --write src"
+
   },
   "eslintConfig": {
     "extends": [

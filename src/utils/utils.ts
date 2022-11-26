@@ -8,8 +8,13 @@ interface Claims {
   exp: number;
 }
 
-export const getTokenFromLocalStorage = (): string => {
-  return localStorage.getItem('token') || '';
+export const getTokenFromStorage = (): string => {
+  return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+};
+
+export const removeTokenFromStorage = () => {
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
 };
 
 export const getEmailFromLocalStorage = (): string => {
@@ -18,12 +23,23 @@ export const getEmailFromLocalStorage = (): string => {
 
 export const extractUserIdFromToken = (token: string): string | null => {
   if (!token) return null;
-  const { id }: Claims = jwt_decode<Claims>(token);
-  return id;
+  try {
+    const { id }: Claims = jwt_decode<Claims>(token);
+    if (!id) return null;
+    return id;
+  } catch (err) {
+    return null;
+  }
 };
 
-export const handleRememberMe = (isToRemember: boolean, email: string) => {
-  return isToRemember ? localStorage.setItem('email', email) : localStorage.removeItem('email');
+export const handleRememberMe = (isToRemember: boolean, email: string, token: string) => {
+  if (isToRemember) {
+    localStorage.setItem('email', email);
+    localStorage.setItem('token', token);
+  } else {
+    localStorage.removeItem('email');
+    sessionStorage.setItem('token', token);
+  }
 };
 
 export const getErrorMessage = (data: AxiosError<AppError>) => {

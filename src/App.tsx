@@ -10,13 +10,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { appContext, defaultCharactersState } from './store/appContext';
 import { useState } from 'react';
 import { cyan } from '@mui/material/colors';
-import { getTokenFromLocalStorage } from './utils/utils';
+import { getTokenFromStorage } from './utils/utils';
 import './App.css';
 
 export const primaryColor = cyan[500];
 
 function App() {
-  const token = getTokenFromLocalStorage();
+  const token = getTokenFromStorage();
   const [appState, setAppState] = useState({
     isLoggedIn: token ? true : false,
     characters: defaultCharactersState,

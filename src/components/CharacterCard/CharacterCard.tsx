@@ -3,7 +3,11 @@ import { Character } from '../../models/Character';
 import { Link } from 'react-router-dom';
 import './CharacterCard.css';
 
-export default function CharacterCard({ data }: { data: Character }) {
+interface CharacterCardProps {
+  data: Character;
+}
+
+export default function CharacterCard({ data }: CharacterCardProps) {
   return (
     <Box className="character-card" sx={{ backgroundColor: 'white' }}>
       <Box className="character-card__info">
@@ -13,7 +17,7 @@ export default function CharacterCard({ data }: { data: Character }) {
         <Typography variant="body1">Gender: {data.gender}</Typography>
         <Typography variant="body1">Location: {data.location.name}</Typography>
       </Box>
-      <Link to={`characters/${data.id.toString()}`} className="character-card__link">
+      <Link to={`/characters/${data.id.toString()}`} className="character-card__link">
         learn more
       </Link>
     </Box>

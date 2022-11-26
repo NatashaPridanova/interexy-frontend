@@ -1,11 +1,11 @@
 const baseUrl = 'http://localhost:5000';
 import axios, { AxiosError } from 'axios';
-import { AppError, DBUser, SignInUser, SignUpUser } from '../../models/User';
+import { AppError, User, UserSignIn, UserSignUp } from '../../models/User';
 import { AuthUser } from '../../models/User';
-import { getTokenFromLocalStorage } from '../../utils/utils';
+import { getTokenFromStorage } from '../../utils/utils';
 
 export const signIn = async (
-  user: SignInUser
+  user: UserSignIn
 ): Promise<AuthUser | undefined | AxiosError<AppError>> => {
   try {
     const url = `${baseUrl}/auth/signin`;
@@ -18,8 +18,8 @@ export const signIn = async (
 };
 
 export const signUp = async (
-  user: SignUpUser
-): Promise<DBUser | undefined | AxiosError<AppError>> => {
+  user: UserSignUp
+): Promise<User | undefined | AxiosError<AppError>> => {
   try {
     const url = `${baseUrl}/auth/signup`;
     const res = await axios.post(url, user);
@@ -30,9 +30,9 @@ export const signUp = async (
   }
 };
 
-export const getUser = async (id: string): Promise<DBUser | undefined | AxiosError<AppError>> => {
+export const getUser = async (id: string): Promise<User | undefined | AxiosError<AppError>> => {
   try {
-    const token = getTokenFromLocalStorage();
+    const token = getTokenFromStorage();
     const url = `${baseUrl}/users/${id}`;
     const res = await axios.get(url, {
       headers: {

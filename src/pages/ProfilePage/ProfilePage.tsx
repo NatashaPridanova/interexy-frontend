@@ -1,16 +1,16 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { primaryColor } from '../../App';
-import { extractUserIdFromToken, getTokenFromLocalStorage } from '../../utils/utils';
+import { extractUserIdFromToken, getTokenFromStorage } from '../../utils/utils';
 import ErrorBar from '../../components/ErrorBar/ErrorBar';
 import { AxiosError } from 'axios';
 import { getUser } from '../../api/UserApi/UserApi';
-import { DBUser } from '../../models/User';
+import { User } from '../../models/User';
 import { useNavigate } from 'react-router-dom';
 
 function ProfilePage() {
-  const [user, setUser] = useState<DBUser | null>(null);
-  const token = getTokenFromLocalStorage();
+  const [user, setUser] = useState<User | null>(null);
+  const token = getTokenFromStorage();
   const id = extractUserIdFromToken(token);
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
