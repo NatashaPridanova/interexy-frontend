@@ -11,7 +11,9 @@ API used: https://rickandmortyapi.com/api/
 
 - Clone the repo
 - Run 'npm install'
-- Run 'npm start'
+- Run 'npm start' 
+
+note: check that your app runs on port 3000
 
 ### Prerequisites
 

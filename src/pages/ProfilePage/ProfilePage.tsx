@@ -40,6 +40,7 @@ function ProfilePage() {
         setIsLoading(false);
       });
     } else {
+      removeTokenFromStorage();
       setIsLoading(false);
       navigate('/');
     }
