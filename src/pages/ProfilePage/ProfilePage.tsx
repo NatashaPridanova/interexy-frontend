@@ -1,7 +1,11 @@
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { primaryColor } from '../../App';
-import { extractUserIdFromToken, getTokenFromStorage } from '../../utils/utils';
+import {
+  extractUserIdFromToken,
+  getTokenFromStorage,
+  removeTokenFromStorage,
+} from '../../utils/utils';
 import ErrorBar from '../../components/ErrorBar/ErrorBar';
 import { AxiosError } from 'axios';
 import { getUser } from '../../api/UserApi/UserApi';
@@ -25,6 +29,10 @@ function ProfilePage() {
             setErrorMessage(data?.response?.data.errorMessage);
           } else {
             setErrorMessage(data.message);
+          }
+          if (data?.response?.status === 401) {
+            removeTokenFromStorage();
+            navigate('/');
           }
         } else if (data) {
           setUser(data);

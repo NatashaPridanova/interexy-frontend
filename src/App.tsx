@@ -5,8 +5,7 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import SignInPage from './pages/SignInPage/SignInPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
-import { Route, Routes } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, HashRouter } from 'react-router-dom';
 import { appContext, defaultCharactersState } from './store/appContext';
 import { useState } from 'react';
 import { cyan } from '@mui/material/colors';
@@ -25,7 +24,7 @@ function App() {
 
   return (
     <appContext.Provider value={{ state: appState, setState: setAppState }}>
-      <BrowserRouter>
+      <HashRouter basename="/">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />} />
@@ -37,7 +36,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </appContext.Provider>
   );
 }
